@@ -70,10 +70,10 @@ async function run() {
             console.log(`Twitter listening on port ${port}`)
         })
 
+
     }catch (error) {
         console.log(error);
     }
 } run().catch(console.dir)
 
-
-
+module.exports = app;
