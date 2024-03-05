@@ -1,6 +1,7 @@
 const express = require('express')
 const cors =require('cors')
 const app = express()
+require("dotenv").config();
 const {MongoClient, ServerApiVersion} = require('mongodb');
 const port = process.env.PORT || 5000;
 
@@ -8,7 +9,10 @@ app.use(cors())
 app.use(express.json());
 
 
-const uri = "mongodb+srv://DB_USER:DB_PASS@cluster0.dv8tfk9.mongodb.net/"
+const MongoUser = process.env.DB_USER;
+const MongoPass = process.env.DB_PASS;
+
+const uri = `mongodb+srv://${MongoUser}:${MongoPass}@cluster0.dv8tfk9.mongodb.net/`
 const client = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1}); 
 
 async function run() {
@@ -59,17 +63,17 @@ async function run() {
             const result = await userCollection.updateOne(filter, updateDoc, options);
             res.send(result);
         })
-
+        app.get('/', (req,res) =>{
+            res.send('Welcome User!')
+        })
+        app.listen(port, () =>{
+            console.log(`Twitter listening on port ${port}`)
+        })
 
     }catch (error) {
         console.log(error);
     }
 } run().catch(console.dir)
 
-app.get('/', (req,res) =>{
-    res.send('Welcome User!')
-})
 
-app.listen(port, () =>{
-    console.log(`Twitter listening on port ${port}`)
-})
+
